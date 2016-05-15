@@ -2,6 +2,7 @@
 // start session and include necessary functions
 session_start();
 require_once('../util/main.php');
+require_once('../model/database.php');
 require_once('../model/admin_database.php');
 require_once('../model/admin_db.php');
 

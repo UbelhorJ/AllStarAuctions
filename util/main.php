@@ -11,4 +11,7 @@ $app_path = '/' . $dirs[1] . '/';
 // Set the include path
 set_include_path($doc_root . $app_path);
 
+// Direct domain path
+$domain = 'http://localhost/allstarauctions/'
+
 ?>

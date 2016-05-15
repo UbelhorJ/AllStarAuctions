@@ -1,5 +1,10 @@
 <?php
 require_once('util/main.php');
+require_once('model/announcement.php');
+require_once('model/announcements_db.php');
+require_once('model/database.php');
 
-include('/view/home/home.php');
+$announcements = getAnnouncements();
+include('view/home/home_view.php');
+
 ?>

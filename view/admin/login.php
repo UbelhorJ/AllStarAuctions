@@ -1,3 +1,6 @@
+<?php
+    require_once('../util/secure_connection.php');
+?>
 <?php include '../view/head.php'; ?>
         <link rel="stylesheet" href="../main.css">
 <?php include '../view/header.php'; ?>
@@ -7,7 +10,6 @@
                 <form action="." method="POST" id="admin_login">
                     <?php
                         echo $login_message . '<br>';
-                        echo $_SESSION['is_valid_admin'] . '<br>';
                     ?>
                     <label for="user_name">User Name:</label>
                     <input type="text" name="user_name" id="user_name" length="64" autofocus>

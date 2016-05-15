@@ -48,3 +48,4 @@ Temporary Items
 
 # Files with passwords
 /model/admin_database.php
+/model/database.php

@@ -1,3 +1,8 @@
+<?php 
+    require_once('../util/secure_connection.php');
+    require_once('../util/verify_admin.php');  // verity admin user logged in 
+?>
+
 <?php include '../view/head.php'; ?>
         <link rel="stylesheet" href="../main.css">
 <?php include '../view/header.php'; ?>
@@ -12,11 +17,5 @@
                 <a href="<?php $app_path; ?>?action=logout">Log Out</a>
             </div>
         </section>
-        
-        <?php
-            echo 'app_path: ' . $app_path . '<br>';
-            echo 'Is Valid Admin: ' . $_SESSION['is_valid_admin'] . '<br>';
-            echo 'Document Root: ' . $_SERVER['DOCUMENT_ROOT'] . '<br>';
-        ?>
 
 <?php include '../view/footer.php'; ?>
