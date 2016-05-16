@@ -9,7 +9,7 @@ function createAnnouncement($result) {
     return $announcement;
 }
 
-// send each announcement to become object 
+// send each announcement result to become object 
 function buildAnnouncementArray($results) {
     $announcementList = array();
     

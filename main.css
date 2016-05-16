@@ -6,6 +6,7 @@
 html { 
     background-image: url(images/UI/photo-1440470177828-6381dc5074ba.jpg);
     background-size: cover;
+    background-attachment: fixed;
     height: 100%;
     margin: 0;
     /*background-repeat: no-repeat;*/

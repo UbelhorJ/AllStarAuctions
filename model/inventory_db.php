@@ -1,0 +1,74 @@
+<?php
+
+// turn result info into item object
+function createItem($result) {
+    $item = new item($result['itemNo'],
+                     $result['name'],
+                     $result['description'],
+                     $result['reservePrice'],
+                     $result['status'],
+                     $result['primaryThumb']);
+    return $item;
+}
+
+// send each item result to become object
+function buildItemsArray($results) {
+    $inventoryList = array();
+    
+    foreach($results as $result) {
+        $item = createItem($result);
+        $inventoryList[] = $item;
+    }
+    
+    return $inventoryList;
+}
+
+// get inventory based on status options
+function getInventory() {
+    global $db;
+    
+    $query = 'SELECT * FROM inventory';
+    $query .= ' ORDER BY itemNo DESC';
+    
+    try {
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        $statement->closeCursor();
+        
+        $inventoryList = buildItemsArray($results);
+        
+        return $inventoryList;
+    } catch (PDOException $e) {
+        $error_message = $e->getMessage();
+        include('..\..\view\errors\error.php');
+    }
+}
+
+
+// add new item to database and return new item number
+function saveNewItem($item) {
+    global $db_admin;
+    
+    $query = "INSERT INTO inventory
+                (name, description, reservePrice, status)
+            VALUES
+                (:name, :description, :reservePrice, :status);";
+    
+    try {
+        $statement = $db_admin->prepare($query);
+        $statement->bindValue(':name', $item->getName());
+        $statement->bindValue(':description', $item->getDescription());
+        $statement->bindValue(':reservePrice', $item->getReservePrice());
+        $statement->bindValue(':status', $item->getStatus());
+        $statement->execute();
+        $itemNo = $db_admin->lastInsertID();
+        $statement->closeCursor();
+        return $itemNo;
+    } catch (PDOException $e) {
+        $error_message = $e->getMessage();
+        include('../../view/errors/error.php');
+    }     
+}
+
+?>   
