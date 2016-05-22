@@ -20,7 +20,7 @@ if (isset($_POST['action'])) {
 
 // If the user isn't logged in, redirect to login page
 if (!isset($_SESSION['is_valid_admin'])) {
-    header('Location: ' . $app_path . 'admin?action=login.php');
+    header('Location: ' . $app_path . 'admin?action=login');
 }
 
 // perform specified action

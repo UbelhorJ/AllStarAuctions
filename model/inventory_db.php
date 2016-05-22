@@ -24,11 +24,29 @@ function buildItemsArray($results) {
 }
 
 // get inventory based on status options
-function getInventory() {
+function getInventory($status, $order_by, $direction) {
     global $db;
+
+    $query = 'SELECT * FROM inventory
+              WHERE ';
     
-    $query = 'SELECT * FROM inventory';
-    $query .= ' ORDER BY itemNo DESC';
+    // build WHERE clause
+    $status_count = 0;
+
+    foreach ($status as $key=>$value) {
+        if ($value === true) {
+            if ($status_count > 0) $query .= ' OR ';  
+            $query .= 'status = ' . '\'' . $key . '\'';
+            $status_count++;
+        }
+    }
+
+    
+    // add ORDER BY clause
+    $query .= ' ORDER BY ' . $order_by;
+    
+    // add direction
+    $query .= ' ' . $direction;
     
     try {
         $statement = $db->prepare($query);

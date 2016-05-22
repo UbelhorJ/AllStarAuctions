@@ -1,20 +1,17 @@
 <?php
 
-function process_image($fileName, $image_dir) {
+function process_thumb($fileName, $original_dir, $thumb_dir) {
     // split file name into name and extension.
-    $image_dir = $image_dir . DIRECTORY_SEPARATOR;
     $i = strrpos($fileName, '.');
     $imageName = substr($fileName, 0, $i);
     $ext = substr($fileName, $i);
     
     // get path to full size image and set paths for new images
-    $old_image_path = $image_dir . $fileName;
-    $image_path_slideshow = $image_dir . $imageName . '_slide' . $ext;
-    $image_path_thumbnail = $image_dir . $imageName . '_thumb' . $ext;
+    $old_image_path = $original_dir . DIRECTORY_SEPARATOR . $fileName;
+    $image_path_thumbnail = $thumb_dir . DIRECTORY_SEPARATOR . $imageName . '_thumb' . $ext;
     
     // resize the image and save
-    resize_image($old_image_path, $image_path_slideshow, '500', '1000');
-    resize_image($old_image_path, $image_path_thumbnail, '150', '150');
+    resize_image($old_image_path, $image_path_thumbnail, '125', '125');
 }
 
 function resize_image($old_image_path, $new_image_path, $max_width, $max_height) {

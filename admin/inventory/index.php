@@ -20,26 +20,53 @@ if (isset($_POST['action'])) {
 
 // If the user isn't logged in, redirect to login page
 if (!isset($_SESSION['is_valid_admin'])) {
-    header('Location: ' . $app_path . 'admin?action=login.php');
+    header('Location: ' . $app_path . 'admin?action=login');
 }
 
 // perform specified action
 switch($action) {
-    case 'show_inventory_home';
+    case 'show_inventory_home':
+        // get selected item statuses
+        $status = array();
+        $status['d'] = isset($_POST['display']) ? true : false;
+        $status['h'] = isset($_POST['hidden']) ? true : false;
+        $status['s'] = isset($_POST['sold']) ? true : false;
+        // check display items if none selected 
+        if ($status['h'] === false && $status['s'] == false) {
+            $status['d'] = true;
+        }
+        
+        // get order by options
+        if (isset($_POST['order_by'])) {
+            $order_by = $_POST['order_by'];
+        } else {
+            $order_by = 'itemNo';
+        }
+        
+        // get direction for order by
+        if (isset($_POST['direction'])) {
+            $direction = $_POST['direction'];
+        } else {
+            $direction = 'DESC';
+        }
+    
         // create list of item objects
-        $inventoryList = getInventory();
+        $inventoryList = getInventory($status, $order_by, $direction);
         
         // add images to item objects
         foreach ($inventoryList as $item) {
             $itemNo = $item->getItemNo();
-            $image_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo;
-            $images = scandir($image_dir);
-            array_shift($images); array_shift($images); // remove stupid . and ..
+            $images_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo . DIRECTORY_SEPARATOR . 'original';
+            $thumbs_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo . DIRECTORY_SEPARATOR . 'thumbs';
+            $images = scandir($images_dir);
+            $thumbs = scandir($thumbs_dir);
+            array_shift($images); array_shift($images); array_shift($thumbs); array_shift($thumbs); // remove stupid . and ..
             $item->setImages($images);
+            $item->setThumbs($thumbs);
             
             // if no primary thumbnail image set, choose first thumbnail
             if ($item->getPrimaryThumb() == NULL) {
-                $item->setPrimaryThumb($images[2]);
+                $item->setPrimaryThumb($thumbs[0]);
             }
         }
                 
@@ -58,19 +85,24 @@ switch($action) {
         
         // upload images to images/inventory/$itemNo
         $image_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo;
+        $original_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo . DIRECTORY_SEPARATOR . 'original';
+        $thumb_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo . DIRECTORY_SEPARATOR . 'thumbs';
         mkdir($image_dir);
+        mkdir($original_dir);
+        mkdir($thumb_dir);
+        
         $imageCount = count($_FILES['uploaded_images']['name']);
         
         for ($i = 0; $i < $imageCount; $i++) {
             $tempLocation = $_FILES['uploaded_images']['tmp_name'][$i];
             $fileName = $_FILES['uploaded_images']['name'][$i];
-            $saveLocation = $image_dir . DIRECTORY_SEPARATOR . $fileName;
+            $saveLocation = $original_dir . DIRECTORY_SEPARATOR . $fileName;
            
             // upload user images in original size
             move_uploaded_file($tempLocation, $saveLocation);
             
-            // create copies with max widths of 500px and 150px
-            process_image($fileName, $image_dir);
+            // create copies with max widths of 125pxpx
+            process_thumb($fileName, $original_dir, $thumb_dir);
         }       
                
         // refresh inventory management page

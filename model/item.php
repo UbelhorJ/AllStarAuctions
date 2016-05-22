@@ -5,14 +5,15 @@ class Item {
     
     public function __construct($itemNo = NULL, $name = NULL, 
                                 $description = NULL, $reservePrice = NULL, 
-                                $status = NULL, $primaryThumb = NULL, $images = NULL) {
+                                $status = NULL, $primaryThumb = NULL, $images = NULL, $thumbs = NULL) {
         $this->itemNo = $itemNo;
         $this->name = $name;
         $this->description = $description;
         $this->reservePrice = $reservePrice;
         $this->status = $status;
         $this->primaryThumb = $primaryThumb;   
-        $this->images = $images;                             
+        $this->images = $images;
+        $this->thumbs = $thumbs;                             
     }
 
     // itemNo
@@ -83,6 +84,16 @@ class Item {
 
     public function setImages($value) {
         $this->images = $value;
+    }
+    
+    // thumbs
+    
+    public function getThumbs() {
+        return $this->thumbs;
+    }
+    
+    public function setThumbs($value) {
+        $this->thumbs = $value;
     }
 }
 
