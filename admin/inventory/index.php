@@ -32,7 +32,7 @@ switch($action) {
         $status['h'] = isset($_POST['hidden']) ? true : false;
         $status['s'] = isset($_POST['sold']) ? true : false;
         // check display items if none selected 
-        if ($status['h'] === false && $status['s'] == false) {
+        if ($status['h'] === false && $status['s'] === false) {
             $status['d'] = true;
         }
         
@@ -73,7 +73,7 @@ switch($action) {
         include('../../view/admin/admin_inventory_view.php');
         break;
     case 'new_item':
-        // collect item data for database
+        // collect info for database
         $item = new item();
         $item->setName($_POST['name']);
         $item->setDescription($_POST['description']);

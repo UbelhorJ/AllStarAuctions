@@ -166,7 +166,7 @@
                     
                         <tr>
                             <!-- <td class="check"><input type="checkbox" name="<?php echo $itemNo; ?>" id="<?php echo $itemNo; ?>"> -->
-                            <td class="item_no"><?php echo $itemNoPad ?></td>
+                            <td class="item_no"><a href="./edit_item.php?itemNo=<?php echo $itemNo; ?>"><?php echo $itemNoPad ?></a></td>
                             <td class="image"><img src="../../images/inventory/<?php echo $itemNo; ?>/thumbs/<?php echo $item->getPrimaryThumb(); ?>" style="max-width: 65px; max-height: 65px;"></td>
                             <td class="name"><?php echo $item->getName(); ?></td>
                             <td class="reserve"><?php echo $reserve; ?></td>

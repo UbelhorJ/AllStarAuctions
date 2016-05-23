@@ -63,6 +63,29 @@ function getInventory($status, $order_by, $direction) {
     }
 }
 
+// get a single item
+function getItem($itemNo) {
+    global $db;
+    
+    $query = 'SELECT * FROM inventory
+             WHERE itemNo = :itemNo;';
+
+    try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':itemNo', $itemNo);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        
+        $item = createItem($result);
+        
+        return $item;
+    } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            include('..\..\view\errors\error.php');
+    }
+
+}
 
 // add new item to database and return new item number
 function saveNewItem($item) {
@@ -88,5 +111,28 @@ function saveNewItem($item) {
         include('../../view/errors/error.php');
     }     
 }
+
+function updateItem($item) {
+    global $db_admin;
+    
+    $query = "UPDATE inventory
+              SET name = :name, description = :description, reservePrice = :reservePrice, status = :status, primaryThumb = :primaryThumb
+              WHERE itemNo = :itemNo;";
+    
+    try {
+        $statement = $db_admin->prepare($query);
+        $statement->bindValue(':name', $item->getName());
+        $statement->bindValue(':description', $item->getDescription());
+        $statement->bindValue(':reservePrice', $item->getReservePrice());
+        $statement->bindValue(':status', $item->getStatus());
+        $statement->bindvalue(':primaryThumb', $item->getPrimaryThumb());
+        $statement->bindValue(':itemNo', $item->getItemNo());
+        $statement->execute();
+    } catch (PDOException $e) {
+        $error_message = $e->getMessage();
+        include('../../view/errors/error.php');
+    }     
+}     
+
 
 ?>   
