@@ -71,9 +71,9 @@
                         <input type="text" id="reserve" name="reserve" value="<?php echo $item->getReservePrice(); ?>">
                         <label for="status">Status: </label>
                         <select id="status" name="status">
-                            <option value="d">Display</option>
-                            <option value="h">Hidden</option>
-                            <option value="s">Sold</option>
+                            <option value="d" <?php if ($item->getStatus() === 'd') echo 'selected'; ?>>Display</option>
+                            <option value="h" <?php if ($item->getStatus() === 'h') echo 'selected'; ?>>Hidden</option>
+                            <option value="s" <?php if ($item->getStatus() === 's') echo 'selected'; ?>>Sold</option>
                         </select>
                     </div>
                     <div style="height: 50px;">
