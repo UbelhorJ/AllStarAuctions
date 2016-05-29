@@ -26,7 +26,7 @@ if (!isset($_SESSION['is_valid_admin'])) {
 // perform specified action
 switch($action) {
     case 'show_announcements_home';
-        $announcements = getAnnouncements();
+        $announcements = getAnnouncements(false); // no limit
         include('../../view/admin/admin_announcements_view.php');
         break;
     case 'add_announcement':

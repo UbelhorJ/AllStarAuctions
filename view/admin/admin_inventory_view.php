@@ -131,8 +131,8 @@
                             <input type="radio" name="order_by" value="reservePrice" <?php if ($order_by == 'reservePrice') echo 'checked' ?>>Reserve 
                             <input type="radio" name="order_by" value="status" <?php if ($order_by == 'status') echo 'checked' ?>>Status
                             <select name="direction">
-                                <option value="ASC" <?php if ($direction == 'ASC') echo 'selected' ?>>A to Z | Highest to Lowest</option>
-                                <option value="DESC" <?php if ($direction == 'DESC') echo 'selected' ?>>Z to A | Lowest to Highest</option>
+                                <option value="ASC" <?php if ($direction == 'ASC') echo 'selected' ?>>A to Z | Lowest to Highest</option>
+                                <option value="DESC" <?php if ($direction == 'DESC') echo 'selected' ?>>Z to A | Highest to Lowest</option>
                             </select>
                         </span>
                         <input type="hidden" value="action" value="show_inventory_home">

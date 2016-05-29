@@ -105,11 +105,12 @@ nav {
     display: inline;
     color: #ffffff;
     text-decoration: none;
+    padding: 0 50px 0 50px;
     margin: 0;
 }
 
 
-#navList a.current {
+#navList li:hover {
     background-color: #E61818   ;
     border-top: 2px solid #E61818;
     border-bottom: 2px solid #E61818;

@@ -1,6 +1,5 @@
 <?php
 // start session and include necessary functions
-session_start();
 require_once('../util/main.php');
 require_once('../util/images.php');
 require_once('../model/item.php');

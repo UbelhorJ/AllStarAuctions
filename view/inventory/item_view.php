@@ -1,3 +1,9 @@
+<?php
+    if ($item->getStatus() == 'h') {
+        header('Location: ' . $app_path . 'inventory');
+    }
+?>
+
 <?php include 'view/head.php'; ?>
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
         <script src="../javascript/bxslider/jquery.bxslider.min.js"></script>       
@@ -18,7 +24,6 @@ $(document).ready(function(){
   $('.bxslider').bxSlider({
       auto: true,
       autoControls: true,
-      captions: true,
       infiniteLoop: true
   });
 });  
@@ -32,6 +37,14 @@ $(document).ready(function(){
             <?php endif ?>
             
             <p><?php echo htmlentities($item->getDescription()); ?></p>
+            
+            <?php
+                $reserve = $item->getReservePrice();
+                 
+                if ($reserve > 0) {
+                    echo '<p>Reserve: $' . $reserve . '</p>'; 
+                }
+            ?>
             
             <div>
                 <ul class="bxslider">

@@ -22,11 +22,13 @@ function buildAnnouncementArray($results) {
 }
 
 // return all announcements from database
-function getAnnouncements() {
+function getAnnouncements($limit) {
     global $db;
     
-    $query = "SELECT * FROM announcements
-              ORDER BY id DESC";
+    $query = 'SELECT * FROM announcements
+              ORDER BY id DESC';
+              
+    if ($limit) $query .= ' LIMIT 3';
     
     try {
         $statement = $db->prepare($query);

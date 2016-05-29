@@ -13,7 +13,7 @@
             <div id="admin_actions">
                 <a href="<?php $app_path; ?>announcements">Manage Annoucements</a><br>
                 <a href="<?php $app_path; ?>inventory">Manage Featured Inventory</a><br>
-                <a href="<?php $app_path; ?>calendar">Manage Events and Calendar</a><br>
+                <!-- <a href="<?php $app_path; ?>calendar">Manage Events and Calendar</a><br> -->
                 <a href="<?php $app_path; ?>?action=logout">Log Out</a>
             </div>
         </section>
