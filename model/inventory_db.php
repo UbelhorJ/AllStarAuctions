@@ -131,6 +131,28 @@ function getItem($itemNo) {
 
 }
 
+// check to see if item exists
+function itemExists($itemNo) {
+    global $db;
+    
+    $query = 'SELECT 1 FROM inventory 
+             WHERE itemNo = :itemNo
+             LIMIT 1;';
+             
+    try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':itemNo', $itemNo);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        
+        return $result['1'] == 1 ? true : false;
+    } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            include('..\..\view\errors\error.php');
+    }
+}
+
 // add new item to database and return new item number
 function saveNewItem($item) {
     global $db_admin;

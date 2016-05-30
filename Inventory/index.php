@@ -47,6 +47,9 @@ switch ($action) {
             header('Location: .?action=show_inventory');
         }
         
+        // Show inventory list if item number does not exist
+        if (!itemExists($itemNo)) header('Location: .?action=show_inventory');
+        
         // create Item
         $item = getItem($itemNo);
         
