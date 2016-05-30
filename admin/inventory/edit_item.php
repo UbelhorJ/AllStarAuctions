@@ -104,9 +104,41 @@ switch ($action) {
             }   
         }
         
-        header('Location: ' . $app_path . 'admin/inventory');   
+        header('Location: ' . $app_path . 'admin/inventory');
         break;
-    default:
+    case 'delete_item':
+        $itemNo = $_GET['itemNo'];
+
+        // get images
+        $item_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo;
+        $images_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo . DIRECTORY_SEPARATOR . 'original';
+        $thumbs_dir = realpath('../../images/inventory') . DIRECTORY_SEPARATOR . $itemNo . DIRECTORY_SEPARATOR . 'thumbs';
+        $images = scandir($images_dir);
+        $thumbs = scandir($thumbs_dir);
+        array_shift($images); array_shift($images); array_shift($thumbs); array_shift($thumbs); // remove stupid . and ..
+        
+        // delete the images
+        foreach ($images as $image) {
+            $image_path = $images_dir . DIRECTORY_SEPARATOR . $image;
+            if (is_file($image_path)) {
+                unlink($image_path);
+            } 
+        }
+        
+        foreach ($thumbs as $thumb) {
+            $thumb_path = $thumbs_dir . DIRECTORY_SEPARATOR . $thumb;
+            if (is_file($thumb_path)) {
+                unlink($thumb_path);
+            } 
+        }
+        
+        // delete the directories
+        rmdir($images_dir);
+        rmdir($thumbs_dir);
+        rmdir($item_dir);
+        
+        deleteItem($itemNo);
+        
         header('Location: ' . $app_path . 'admin/inventory');
         break;
 }

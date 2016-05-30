@@ -3,6 +3,9 @@
     require_once('../../util/verify_admin.php');  // verity admin user logged in 
 
     include ('../../view/head.php');
+?>
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<?php
     include ('../../view/header.php');
     include ('../../view/admin/admin_navigation.php'); 
 ?>
@@ -56,7 +59,43 @@
         display: inline-block;
         text-align: center;
     }
+    
+    fieldset {
+        display: inline-block;
+        border: 1px solid #AAAAAA;
+        padding: 5px;
+    }
+    
+    fieldset p, legend {
+        color: #AAAAAA;
+    }
 </style>
+
+<script>
+$(document).ready(function(){
+    $("#unlock_delete").change(function(){
+        if ($(this).is(":checked")) {
+            $("#unlock_delete").next().text("Locked");
+            $("#unlock_fieldset").css("border", "1px solid #AAAAAA");
+            $("#unlock_fieldset legend, #unlock_fieldset p").css("color", "#AAAAAA");
+            $("#delete_item").attr("disabled", "disabled");
+        } else {
+            $("#unlock_delete").next().text("Unlocked");
+            $("#unlock_fieldset").css("border", "1px solid #FF0000");
+            $("#unlock_fieldset legend, #unlock_fieldset p").css("color", "#FF0000");
+            $("#delete_item").removeAttr("disabled");
+        }
+    });
+    
+    $("#delete_item").click(function(){
+        var response = confirm("Are you sure you want to delete \"<?php echo $item->getName(); ?>\"?\nThis cannot be un-done.");
+        
+        if (response == true) {
+            $("#delete_item_form").submit();
+        }
+    });
+});    
+</script>
 
         <section>
             <h2>Edit <?php echo $item->getName(); ?></h2>
@@ -105,6 +144,17 @@
                     <input type="hidden" name="itemNo" value="<?php echo $item->getItemNo(); ?>">
                     <input type="hidden" name="action" value="save_changes">
                     <input type="submit" value=" Save " style="margin-bottom: 3px;">
+            </div>
+                </form>
+                <form id="delete_item_form" method="POST">
+                    <fieldset id="unlock_fieldset">
+                        <legend><input type="checkbox" id="unlock_delete" checked> <span>Locked&nbsp;</span></legend>
+                        <p>Deleting an item will cause any links to it to no longer work. If the item has been sold, change the status to "sold."<br>
+                        Only delete items if they were mistakenly added, and you no longer wish it to be visible.</p>
+                        <input type="button" id="delete_item" value=" Delete Item " disabled><br>
+                        <input type="hidden" name="itemNo" value="<?php echo $itemNo; ?>">
+                        <input type="hidden" name="action" value="delete_item">
+                    </fieldset>
                 </form>
             </div>
         </section>

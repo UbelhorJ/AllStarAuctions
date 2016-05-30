@@ -198,6 +198,22 @@ function updateItem($item) {
         $error_message = $e->getMessage();
         include('../../view/errors/error.php');
     }     
+}
+
+function deleteItem($itemNo) {
+    global $db_admin;
+    
+    $query ="DELETE FROM inventory
+             WHERE itemNo = :itemNo";
+
+    try {
+        $statement = $db_admin->prepare($query);
+        $statement->bindValue(':itemNo', $itemNo);
+        $statement->execute();
+    } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            include('..\..\view\errors\error.php');
+    }
 }     
 
 
