@@ -20,9 +20,11 @@ switch ($action) {
         $order_by = 'itemNo';
         $direction = 'DESC';
         
-        $inventoryList = getInventory($status, $order_by, $direction);
+        $limit = false;
         
-        // loal thumbnail images and set primary
+        $inventoryList = getInventory($status, $order_by, $direction, $limit);
+        
+        // load thumbnail images and set primary
         foreach ($inventoryList as $item) {
             $itemNo = $item->getItemNo();
             $thumbs_dir = realpath('../images/inventory') . DIRECTORY_SEPARATOR . $itemNo . DIRECTORY_SEPARATOR . 'thumbs';

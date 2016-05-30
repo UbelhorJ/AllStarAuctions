@@ -28,30 +28,41 @@ switch($action) {
     case 'show_inventory_home':
         // get selected item statuses
         $status = array();
-        $status['d'] = isset($_POST['display']) ? true : false;
-        $status['h'] = isset($_POST['hidden']) ? true : false;
-        $status['s'] = isset($_POST['sold']) ? true : false;
+        $status['d'] = isset($_GET['display']) ? true : false;
+        $status['h'] = isset($_GET['hidden']) ? true : false;
+        $status['s'] = isset($_GET['sold']) ? true : false;
         // check display items if none selected 
         if ($status['h'] === false && $status['s'] === false) {
             $status['d'] = true;
         }
         
         // get order by options
-        if (isset($_POST['order_by'])) {
-            $order_by = $_POST['order_by'];
+        if (isset($_GET['order_by'])) {
+            $order_by = $_GET['order_by'];
         } else {
             $order_by = 'itemNo';
         }
         
         // get direction for order by
-        if (isset($_POST['direction'])) {
-            $direction = $_POST['direction'];
+        if (isset($_GET['direction'])) {
+            $direction = $_GET['direction'];
         } else {
             $direction = 'DESC';
         }
-    
+        
+        // setup pagination and limit
+        $limit = array('itemsPerPage' => 15);
+        $itemCount =  getInventoryRowCount($status, $order_by, $direction);
+        $totalPages = ceil($itemCount / $limit['itemsPerPage']);
+        
+        isset($_GET['pageNo']) ? $pageNo = $_GET['pageNo'] : $pageNo = 1;
+        if ($pageNo < 1) $pageNo = 1;
+        if ($pageNo > $totalPages) $pageNo = $totalPages;
+        
+        $limit['offset'] = ($pageNo - 1) * $limit['itemsPerPage'];
+                                    
         // create list of item objects
-        $inventoryList = getInventory($status, $order_by, $direction);
+        $inventoryList = getInventory($status, $order_by, $direction, $limit);
         
         // add images to item objects
         foreach ($inventoryList as $item) {

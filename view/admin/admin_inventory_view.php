@@ -3,6 +3,10 @@
     require_once('../../util/verify_admin.php');  // verity admin user logged in 
 
     include ('../../view/head.php');
+    ?>
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="../../javascript/admin_inventory.js"></script>
+<?php
     include ('../../view/header.php');
     include ('../../view/admin/admin_navigation.php'); 
 ?>
@@ -34,6 +38,11 @@
         width: 100%; 
         border: 2px solid #3F51B5;
         border-collapse: collapse;
+    }
+    
+    thead {
+        background-color: #3F51B5;
+        color: #FFFFFF;
     }
     
     tr {
@@ -79,6 +88,11 @@
         color: #FF3E3E;
     }
     
+    #pagination {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
 </style>
 
         <section>
@@ -116,12 +130,12 @@
             <!-- Filter -->
             <fieldset>
                 <legend>&nbsp;Filter Items&nbsp;</legend>
-                    <form action="." method="POST" id="items_filter">
+                    <form action="." method="GET" id="items_filter">
                         <span>
                             <label for="status">Status:</label> 
-                            <input type="checkbox" name="display" <?php if ($status['d'] === true) echo 'checked' ?>>Display 
-                            <input type="checkbox" name="hidden" <?php if ($status['h'] === true) echo 'checked' ?>>Hidden 
-                            <input type="checkbox" name="sold" <?php if ($status['s'] === true) echo 'checked' ?>>Sold
+                            <input type="checkbox" name="display" id="display" <?php if ($status['d'] === true) echo 'checked' ?>>Display 
+                            <input type="checkbox" name="hidden" id="hidden" <?php if ($status['h'] === true) echo 'checked' ?>>Hidden 
+                            <input type="checkbox" name="sold" id="sold" <?php if ($status['s'] === true) echo 'checked' ?>>Sold
                         </span>
                         <br>
                         <span>
@@ -130,7 +144,7 @@
                             <input type="radio" name="order_by" value="name" <?php if ($order_by == 'name') echo 'checked' ?>> Name 
                             <input type="radio" name="order_by" value="reservePrice" <?php if ($order_by == 'reservePrice') echo 'checked' ?>>Reserve 
                             <input type="radio" name="order_by" value="status" <?php if ($order_by == 'status') echo 'checked' ?>>Status
-                            <select name="direction">
+                            <select name="direction" id="direction">
                                 <option value="ASC" <?php if ($direction == 'ASC') echo 'selected' ?>>A to Z | Lowest to Highest</option>
                                 <option value="DESC" <?php if ($direction == 'DESC') echo 'selected' ?>>Z to A | Highest to Lowest</option>
                             </select>
@@ -139,6 +153,28 @@
                         <input type="submit" value=" Filter ">
                     </form>
             </fieldset>
+            
+            <!-- pagination -->
+            <div id="pagination">
+                <input type="button" id="firstPage" value=" First " <?php if ($pageNo == 1) echo 'disabled' ?>>
+                <input type="button" id="previousPage" value=" Previous " <?php if ($pageNo == 1) echo 'disabled' ?>>
+                <select id="pageList">
+                    <?php
+                    $page = 1; 
+                    $i = $totalPages;
+                        for($i; $i > 0; $i--) : 
+                    ?>
+                        <option value="<?php echo $page; ?>" <?php if ($page == $pageNo) echo 'selected' ?>>Page <?php echo $page; ?></option>
+                    <?php 
+                        $page++;
+                        endfor 
+                    ?>
+                </select>
+                <input type="button" id="nextPage" value=" Next " <?php if ($pageNo == $totalPages) echo 'disabled' ?>>
+                <input type="button" id="lastPage" value=" Last " <?php if ($pageNo == $totalPages) echo 'disabled' ?>>
+                <input type="hidden" id="pageNo" value="<?php echo $pageNo ?>">
+                <input type="hidden" id="totalPages" value="<?php echo $totalPages ?>">
+            </div>
             
             <!-- Item List Table -->
             <table id="item_list">
