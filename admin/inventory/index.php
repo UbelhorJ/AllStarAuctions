@@ -119,6 +119,12 @@ switch($action) {
         // refresh inventory management page
         header('Location: .?action=show_inventory_home');
         break;
+    case 'change_item_status':
+        $itemNo = $_POST['itemNo'];
+        $status = $_POST['status'];
+        
+        updateItemStatus($itemNo, $status); 
+        break;
 }
 
 ?>

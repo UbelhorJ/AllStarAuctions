@@ -59,4 +59,21 @@ $(document).ready(function() {
         
         window.location.href = url;
     });
+    
+    $(".select_status").change(function(){
+        var itemNo = $(this).next().val();
+        var formID = "#" + itemNo + "_status_form";
+        var formSaveSpan = "#" + itemNo + "_save_message"; 
+        var formData = $(formID).serializeArray();
+        var URL = $(formID).attr("action");
+        
+        $.ajax({
+            url: URL,
+            type: "POST",
+            data: formData,
+            success: function(success){
+                $(formSaveSpan).text(success);
+            }
+        });
+    });
 });    

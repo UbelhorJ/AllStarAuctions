@@ -85,7 +85,7 @@
     }
     
     .save_message {
-        color: #FF3E3E;
+        color: #0055DD;
     }
     
     #pagination {
@@ -207,16 +207,16 @@
                             <td class="name"><?php echo $item->getName(); ?></td>
                             <td class="reserve"><?php echo $reserve; ?></td>
                             <td class="status">
-                                <form id="item_status">
-                                    <select name="status" id="status">
+                                <form action="." id="<?php echo $itemNo; ?>_status_form">
+                                    <select name="status" class="select_status">
                                         <option value="h" <?php if ($status == 'h') echo 'selected' ?>>Hidden</option>
                                         <option value="d" <?php if ($status == 'd') echo 'selected' ?>>Display</option>
                                         <option value="s" <?php if ($status == 's') echo 'selected' ?>>Sold</option>
                                     </select>
+                                    <input type="hidden" name="itemNo" value="<?php echo $itemNo; ?>">
                                     <input type="hidden" name="action" value="change_item_status">
-                                    <input type="hidden" name="item_no" value="<?php echo $itemNo; ?>">
                                 </form>
-                                <span class="save_message"></span>
+                                <span id="<?php echo $itemNo; ?>_save_message" class="save_message"></span>
                             </td>
                         </tr>
                     <?php endforeach ?>

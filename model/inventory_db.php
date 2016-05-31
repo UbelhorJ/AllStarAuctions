@@ -200,6 +200,7 @@ function updateItem($item) {
     }     
 }
 
+// deletes an item based on the supplied item number
 function deleteItem($itemNo) {
     global $db_admin;
     
@@ -216,5 +217,25 @@ function deleteItem($itemNo) {
     }
 }     
 
-
+// update item's status based on supplied item number
+function updateItemStatus($itemNo, $status) {
+    global $db_admin;
+    
+    $query = 'UPDATE inventory
+              SET status = :status
+              WHERE itemNo = :itemNo';
+    
+    try {
+        $statement = $db_admin->prepare($query);
+        $statement->bindValue(':itemNo', $itemNo);
+        $statement->bindValue(':status', $status);
+        $statement->execute();
+        $count = $statement->rowCount();
+        
+        echo $count = 1 ? "Saved" : "Error";
+    } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            include('..\..\view\errors\error.php');
+    }
+}
 ?>   
